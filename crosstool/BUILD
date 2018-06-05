@@ -7,6 +7,14 @@ config_setting(
     }
 )
 
+cc_toolchain_suite(
+    name = "toolchain",
+    toolchains = {
+        "local|compiler": ":cc-compiler-local",
+#        "darwin|compiler": ":cc-compiler-darwin",
+    },
+)
+
 cc_toolchain(
     name = "cc-compiler-local",
     all_files = ":empty",

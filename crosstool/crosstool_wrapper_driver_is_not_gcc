@@ -248,7 +248,7 @@ def main():
       com_flag = 1
       break
   origin_cmd.append('-L/usr/local/lib')
-  origin_cmd.append('-lglog')
+  #origin_cmd.append('-lglog')
   if com_flag and _platform == 'darwin':
     origin_cmd.append('-Wl,-rpath,$ORIGIN/../../bin')
     return subprocess.call([OTHER_COMPILER] + origin_cmd)
