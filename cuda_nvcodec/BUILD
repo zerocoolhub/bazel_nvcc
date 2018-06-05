@@ -9,7 +9,7 @@ config_setting(
 
 cc_library(
   name = "cuda_nvcodec",
-  srcs = select({":useCUDA": glob(["NvDecoder/*"]),
+  srcs = select({":useCUDA": glob(["NvDecoder/*", "NvEncoder/*"]),
                  "//conditions:default": []
                }),
   deps = ["@cuda//:main", "//cuda_utils:cuda_utils"],
