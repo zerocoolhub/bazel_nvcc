@@ -248,6 +248,10 @@ def main():
       com_flag = 1
       break
   origin_cmd.append('-L/usr/local/lib')
+  origin_cmd.append('-ldl');
+  origin_cmd.append('-lcuda');
+  origin_cmd.append('-lnvcuvid');
+#  origin_cmd.append('-lavcodec -lavutil -lavformat');
   #origin_cmd.append('-lglog')
   if com_flag and _platform == 'darwin':
     origin_cmd.append('-Wl,-rpath,$ORIGIN/../../bin')

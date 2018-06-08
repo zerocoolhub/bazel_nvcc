@@ -18,7 +18,7 @@
 #include <sstream>
 #include <iterator>
 #include <cstring>
-#include "../Utils/Logger.h"
+#include "Logger.h"
 
 extern simplelogger::Logger *logger;
 

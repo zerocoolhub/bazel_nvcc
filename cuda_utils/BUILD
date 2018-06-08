@@ -9,7 +9,7 @@ config_setting(
 
 cc_library(
   name = "cuda_utils",
-  srcs = select({":useCUDA": ["BitDepth.cu.cc", "ColorSpace.cu.cc", "Logger.h", "NvCodecUtils.h"],
+  srcs = select({":useCUDA": ["BitDepth.cu.cc", "ColorSpace.cu.cc", "Logger.h", "NvCodecUtils.h", "FFmpegDemuxer.h", "NvEncoderCLIOptions.h"],
                  "//conditions:default": []
                }),
   deps = ["@cuda//:main"],
