@@ -14,7 +14,7 @@
 #include <iostream>
 #include <memory>
 #include <functional>
-//#include <opencv2/opencv.hpp>
+#include <opencv2/opencv.hpp>
 #include <cuda_nvcodec/NvEncoderCuda.h>
 #include <cuda_nvcodec/NvDecoder.h>
 #include <cuda_utils/NvCodecUtils.h>
@@ -243,7 +243,6 @@ int main(int argc, char **argv) {
 
         cuMemAlloc(&pTmpImage, nFrameSize);
 
-        /*
         cv::Mat cv_overlay_img_rgba = cv::imread("overlay1.png", CV_LOAD_IMAGE_COLOR);
         cv::cvtColor(cv_overlay_img_rgba, cv_overlay_img_rgba, CV_BGR2RGBA);
         int overlay_width = cv_overlay_img_rgba.size().width;
@@ -255,7 +254,7 @@ int main(int argc, char **argv) {
         // Allocate GPU memory for rgba and grey images
         cudaMalloc((void **)&d_overlay_img_rgba, overlay_pixels * sizeof(uchar4));
         cudaMemcpy(d_overlay_img_rgba, h_overlay_img_rgba, overlay_pixels * sizeof(uchar4),
-                   cudaMemcpyHostToDevice);*/
+                   cudaMemcpyHostToDevice);
 
         do {
             demuxer.Demux(&pVideo, &nVideoBytes);
@@ -281,7 +280,7 @@ int main(int argc, char **argv) {
 
 //                cudaNV12ToRGBA(ppFrame[i], (uchar4 *)pTmpImage, dec.GetWidth(), dec.GetHeight() );
                 Nv12ToBgra32((uint8_t *)ppFrame[i], 1536, (uint8_t*)pTmpImage, 4 * dec.GetWidth(), dec.GetWidth(), dec.GetHeight());
-//                OverlayImage((uint8_t *)pTmpImage, dec.GetWidth(), dec.GetHeight(), d_overlay_img_rgba, overlay_width, overlay_height);
+                OverlayImage((uint8_t *)pTmpImage, dec.GetWidth(), dec.GetHeight(), d_overlay_img_rgba, overlay_width, overlay_height);
                 Bgra32ToNv12((uint8_t *)pTmpImage, dec.GetWidth() * 4, (uint8_t*)ppFrame[i], 1536, dec.GetWidth(), dec.GetHeight());
 //                GetImage(pTmpImage, reinterpret_cast<uint8_t*>(pImage.get()), 4 * dec.GetWidth(), dec.GetHeight());
 
@@ -339,9 +338,9 @@ int main(int argc, char **argv) {
             cuMemFree(pTmpImage);
         }
 
-//        if (d_overlay_img_rgba) {
-//            cudaFree(d_overlay_img_rgba);
-//        }
+        if (d_overlay_img_rgba) {
+            cudaFree(d_overlay_img_rgba);
+        }
 
         if (pEnc)
         {
