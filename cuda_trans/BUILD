@@ -20,7 +20,11 @@ cc_binary(
   "-lopencv_cudalegacy", "-lopencv_calib3d", "-lopencv_features2d", "-lopencv_highgui", "-lopencv_videoio",
   "-lopencv_photo", "-lopencv_imgcodecs", "-lopencv_cudawarping", "-lopencv_cudaimgproc",
   "-lopencv_cudafilters", "-lopencv_video", "-lopencv_objdetect", "-lopencv_imgproc",
-  "-lopencv_flann", "-lopencv_cudaarithm", "-lopencv_viz", "-lopencv_core", "-lopencv_cudev"],
+  "-lopencv_flann", "-lopencv_cudaarithm", "-lopencv_viz", "-lopencv_core", "-lopencv_cudev",
+  "-ldl",
+  "-lcuda",
+  "-lnvcuvid"],
+  copts = ["-x cuda"], # Here for now b/c this is how TF crosstool wrapper works
 )
 
 cc_binary(
