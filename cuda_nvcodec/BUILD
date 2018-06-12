@@ -1,24 +1,11 @@
 package(default_visibility = ["//visibility:public"])
 
-config_setting(
-    name = "useCUDA",
-    values = {
-      "copt": "-DuseCUDA",
-    },
-)
-
 cc_library(
   name = "cuda_nvcodec",
-  srcs = select({":useCUDA": glob(["*.cc", "*.h", "*.cpp"]),
-                 "//conditions:default": []
-               }),
-  deps = ["@cuda//:main", "//cuda_utils:cuda_utils"],
+  srcs = glob(["*.cc", "*.h", "*.cpp"]),
+  deps = [
+      "@cuda//:main",
+      "//cuda_utils:cuda_utils"
+  ],
   copts= ["-x cuda"], # Here for now b/c this is how TF crosstool wrapper works
-#    linkopts = ["-lm"],
-)
-
-cc_binary(
-  name = "main",
-  srcs = ["main.cc"],
-  deps = [":cuda"],
 )
