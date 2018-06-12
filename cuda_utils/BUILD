@@ -13,6 +13,7 @@ cc_library(
                  "//conditions:default": []
                }),
   deps = ["@cuda//:main"],
+  copts= ["-x cuda"], # Here for now b/c this is how TF crosstool wrapper works
 )
 
 cc_binary(
