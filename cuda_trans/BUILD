@@ -1,10 +1,11 @@
+load("//:cuda.bzl", "cc_cuda_binary")
 package(default_visibility = ["//visibility:public"])
 
-cc_binary(
+cc_cuda_binary(
   name = "cuda_trans",
   srcs = ["AppTrans.cpp"],
   deps = [
-      "@cuda//:main",
+#      "@cuda//:main",
       "//cuda_utils:cuda_utils",
       "//cuda_nvcodec:cuda_nvcodec"
   ],
