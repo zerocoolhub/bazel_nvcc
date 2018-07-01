@@ -1,5 +1,5 @@
 .DS_Store
 *.swp
-bazel*
+bazel-*
 out.h264
 test.mkv
