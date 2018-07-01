@@ -8,6 +8,6 @@ new_http_archive(
 new_local_repository(
     name = "cuda",
     path = "/usr/local/cuda",
-    build_file = "cuda.BUILD",
+    build_file = "BUILD",
 )
 
