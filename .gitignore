@@ -3,3 +3,4 @@
 bazel-*
 out.h264
 test.mkv
+*.spv

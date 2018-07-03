@@ -1,0 +1,4 @@
+*.xcuserstate
+.DS_Store
+*.spv
+VulkanTest/VulkanTest.xcodeproj/xcuserdata/lex.xcuserdatad/xcdebugger
