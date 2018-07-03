@@ -3,7 +3,7 @@ package(default_visibility = ["//visibility:public"])
 
 cc_cuda_binary(
   name = "cuda_trans",
-  srcs = ["AppTrans.cpp"],
+  srcs = ["AppTrans.cpp", "stb_image.h"],
   deps = [
 #      "@cuda//:main",
       "//cuda_utils:cuda_utils",
@@ -18,6 +18,8 @@ cc_cuda_binary(
   "-lopencv_flann", "-lopencv_cudaarithm", "-lopencv_viz", "-lopencv_core", "-lopencv_cudev",
   "-ldl",
   "-lcuda",
-  "-lnvcuvid"],
+  "-lnvcuvid",
+  "-lglfw3 -lrt -lm -ldl -lX11 -lpthread -lxcb -lXau -lXdmcp -lvulkan",
+  ],
   copts = ["-x cuda"], # Here for now b/c this is how TF crosstool wrapper works
 )
