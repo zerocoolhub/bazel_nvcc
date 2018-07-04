@@ -1,6 +1,6 @@
 cc_binary(
   name = "qt",
-  srcs = ["hellovulkantexture.cpp", "hellovulkantexture.h", "main.cpp"],
+  srcs = ["window.cpp", "main.cpp", "window.h", "slidersgroup.cpp", "slidersgroup.h"],
   deps = [
     "@qt//:qt",
     #"@vulkan//:vulkan", # VULKAN MUST BE LOADED AS A SYSTEM LIBRARY, VIA LD_LIBRARY_PATH,
