@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QtWidgets>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QGridLayout>
 
 MainWindow::MainWindow()
 {
@@ -11,7 +12,7 @@ MainWindow::MainWindow()
     slider->setTickInterval(10);
     slider->setSingleStep(1);
 
-    QBoxLayout *slidersLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    slidersLayout->addWidget(slider);
-    setLayout(slidersLayout);
+    QGridLayout *gridLayout = new QGridLayout(this);
+    gridLayout->addWidget(slider, 0, 0, 0);
+    setLayout(gridLayout);
 }
