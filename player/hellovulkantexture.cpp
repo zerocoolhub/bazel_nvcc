@@ -678,8 +678,11 @@ void VulkanRenderer::initSwapChainResources()
     // Projection matrix
     m_proj = m_window->clipCorrectionMatrix(); // adjust for Vulkan-OpenGL clip space differences
     const QSize sz = m_window->swapChainImageSize();
-    m_proj.perspective(45.0f, sz.width() / (float) sz.height(), 0.01f, 100.0f);
-    m_proj.translate(0, 0, -4);
+    //printf("swap chain image width: %d\n", sz.width());
+    //printf("swap chain image height: %d\n", sz.height());
+    //m_proj.perspective(45.0f, 1.0, 0.01f, 100.0f);
+    //m_proj.translate(0, 0, -0.01);
+    m_proj.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
 }
 
 void VulkanRenderer::releaseSwapChainResources()
