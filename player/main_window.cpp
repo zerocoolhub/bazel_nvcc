@@ -6,12 +6,11 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QGridLayout>
 
-MainWindow::MainWindow(VulkanWindow *w, VulkanWindow *w2)
-    : m_window(w), m_window2(w2)
+MainWindow::MainWindow(VulkanWindow *w)
+    : m_window(w)
 {
 
     QWidget *wrapper = QWidget::createWindowContainer(w);
-    QWidget *wrapper2 = QWidget::createWindowContainer(w2);
 
     slider = new QSlider(Qt::Horizontal);
     slider->setFocusPolicy(Qt::StrongFocus);
@@ -21,9 +20,8 @@ MainWindow::MainWindow(VulkanWindow *w, VulkanWindow *w2)
 
     QGridLayout *gridLayout = new QGridLayout(this);
     gridLayout->addWidget(wrapper, 0, 0, 0);
-    gridLayout->addWidget(wrapper2, 0, 1, 0);
-    gridLayout->setColumnStretch(0, 1);
-    gridLayout->setColumnStretch(1, 1);
+    gridLayout->setColumnStretch(0, 0);
+    gridLayout->setColumnStretch(1, 0);
     gridLayout->addWidget(slider, 1, 0, 0);
     setLayout(gridLayout);
 }
