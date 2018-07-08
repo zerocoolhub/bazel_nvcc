@@ -459,7 +459,7 @@ void VulkanRenderer::initResources()
         qFatal("Failed to create sampler: %d", err);
 
     // Texture.
-    if (!createTexture(QStringLiteral("/home/lex/bazel_nvcc/hellovulkantexture/qt256.png")))
+    if (!createTexture(QStringLiteral("/home/lex/bazel_nvcc/player/texture.png")))
         qFatal("Failed to create texture");
 
     // Set up descriptor set and its layout.
