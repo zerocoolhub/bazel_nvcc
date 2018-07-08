@@ -793,7 +793,7 @@ void VulkanRenderer::startNextFrame()
     if (err != VK_SUCCESS)
         qFatal("Failed to map memory: %d", err);
     QMatrix4x4 m = m_proj;
-    m.rotate(m_rotation, 0, 0, 1);
+    // m.rotate(m_rotation, 0, 0, 1); // DISABLE ROTATION
     memcpy(p, m.constData(), 16 * sizeof(float));
     m_devFuncs->vkUnmapMemory(dev, m_bufMem);
 
