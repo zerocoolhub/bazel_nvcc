@@ -363,6 +363,7 @@ void VulkanRenderer::initResources()
         text += std::string(".png");
 
         QImage img(text.c_str());
+        img = img.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
         m_imageData.push_back(img);
     }
 
