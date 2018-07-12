@@ -19,7 +19,6 @@ cc_cuda_binary(
   "-ldl",
   "-lcuda",
   "-lnvcuvid",
-  "-lglfw3 -lrt -lm -ldl -lX11 -lpthread -lxcb -lXau -lXdmcp -lvulkan",
   ],
   copts = ["-x cuda"], # Here for now b/c this is how TF crosstool wrapper works
 )
