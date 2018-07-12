@@ -1,19 +1,18 @@
 #include <QtWidgets/QMainWindow>
 
-class VulkanWindow;
-
 class QMenu;
 class QSlider;
 
-class MainWindow : public QMainWindow
-{
-public:
-    explicit MainWindow(VulkanWindow *w);
+class VulkanWindow;
 
-private:
-	QMenu *fileMenu;
-    QSlider *slider;
-    VulkanWindow *m_window;
+class MainWindow : public QMainWindow {
+ public:
+	explicit MainWindow(VulkanWindow *w);
 
+ private:
 	void createMenus();
+
+	QMenu *fileMenu;
+	QSlider *slider;
+	VulkanWindow *m_window;
 };
