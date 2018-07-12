@@ -18,6 +18,8 @@ class MainWindow : public QMainWindow {
 	QMenu *fileMenu;
 	QAction *openAction;
 
+	QString movieFile;
+
 	VulkanWindow *m_window;
 	QSlider *slider;
 };

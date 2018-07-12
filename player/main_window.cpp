@@ -46,5 +46,7 @@ void MainWindow::createMenus() {
 }
 
 void MainWindow::openFile() {
-  qDebug("open file\n");
+  movieFile = QFileDialog::getOpenFileName(this,
+    tr("Open Movie File"), QDir::homePath(), tr("All files (*.*)"));
+  qDebug() << movieFile; 
 }
