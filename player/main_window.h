@@ -10,9 +10,14 @@ class MainWindow : public QMainWindow {
 	explicit MainWindow(VulkanWindow *w);
 
  private:
+ 	void createActions();	
 	void createMenus();
 
+	void openFile();
+
 	QMenu *fileMenu;
-	QSlider *slider;
+	QAction *openAction;
+
 	VulkanWindow *m_window;
+	QSlider *slider;
 };
