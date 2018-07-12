@@ -156,6 +156,14 @@ __global__ static void YuvToRgbPlanarKernel(uint8_t *pYuv, int nYuvPitch, uint8_
     *(RgbUnitx2 *)(pDst + nRgbpPitch) = RgbUnitx2 {rgb2.v.z, rgb3.v.z};
 }
 
+union RGBA32 {
+    uint32_t d;
+    uchar4 v;
+    struct {
+        uint8_t r, g, b, a;
+    } c;
+};
+
 union BGRA32 {
     uint32_t d;
     uchar4 v;
@@ -175,6 +183,13 @@ union BGRA64 {
 void Nv12ToBgra32(uint8_t *dpNv12, int nNv12Pitch, uint8_t *dpBgra, int nBgraPitch, int nWidth, int nHeight, int iMatrix) {
     SetMatYuv2Rgb(iMatrix);
     YuvToRgbKernel<uchar2, BGRA32, uint2>
+        <<<dim3((nWidth + 63) / 32 / 2, (nHeight + 3) / 2 / 2), dim3(32, 2)>>>
+        (dpNv12, nNv12Pitch, dpBgra, nBgraPitch, nWidth, nHeight);
+}
+
+void Nv12ToRgba32(uint8_t *dpNv12, int nNv12Pitch, uint8_t *dpBgra, int nBgraPitch, int nWidth, int nHeight, int iMatrix) {
+    SetMatYuv2Rgb(iMatrix);
+    YuvToRgbKernel<uchar2, RGBA32, uint2>
         <<<dim3((nWidth + 63) / 32 / 2, (nHeight + 3) / 2 / 2), dim3(32, 2)>>>
         (dpNv12, nNv12Pitch, dpBgra, nBgraPitch, nWidth, nHeight);
 }

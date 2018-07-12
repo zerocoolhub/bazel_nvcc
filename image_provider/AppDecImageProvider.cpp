@@ -192,7 +192,9 @@ int main(int argc, char **argv)
                         GetImage(pTmpImage, reinterpret_cast<uint8_t*>(pImage.get()), dec.GetWidth(), 3 * dec.GetHeight());
                         break;
                     case bgra:
-                        Nv12ToBgra32((uint8_t *)ppFrame[i], dec.GetWidth(), (uint8_t*)pTmpImage, 4 * dec.GetWidth(), dec.GetWidth(), dec.GetHeight());
+                        // HANDLE THIS FORMALLY IN A RGBA CASE!!
+                        // Nv12ToBgra32((uint8_t *)ppFrame[i], dec.GetWidth(), (uint8_t*)pTmpImage, 4 * dec.GetWidth(), dec.GetWidth(), dec.GetHeight());
+                        Nv12ToRgba32((uint8_t *)ppFrame[i], dec.GetWidth(), (uint8_t*)pTmpImage, 4 * dec.GetWidth(), dec.GetWidth(), dec.GetHeight());
                         GetImage(pTmpImage, reinterpret_cast<uint8_t*>(pImage.get()), 4 * dec.GetWidth(), dec.GetHeight());
                         break;
                     case bgra64:
