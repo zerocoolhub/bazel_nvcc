@@ -138,6 +138,20 @@ VkCommandBuffer VulkanRenderer::beginSingleTimeCommands() {
   return commandBuffer;
 }
 
+void VulkanRenderer::endSingleTimeCommands(VkCommandBuffer commandBuffer) {
+  m_devFuncs->vkEndCommandBuffer(commandBuffer);
+        
+  VkSubmitInfo submitInfo = {};
+  submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+  submitInfo.commandBufferCount = 1;
+  submitInfo.pCommandBuffers = &commandBuffer;
+        
+  m_devFuncs->vkQueueSubmit(m_window->graphicsQueue(), 1, &submitInfo, VK_NULL_HANDLE);
+  m_devFuncs->vkQueueWaitIdle(m_window->graphicsQueue());
+        
+  m_devFuncs->vkFreeCommandBuffers(m_window->device(), m_window->graphicsCommandPool(), 1, &commandBuffer);
+}
+
 bool VulkanRenderer::createTexture(const QString &name)
 {
     QImage img(name);

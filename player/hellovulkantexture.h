@@ -75,6 +75,7 @@ private:
 
 
     VkCommandBuffer beginSingleTimeCommands();
+    void endSingleTimeCommands(VkCommandBuffer commandBuffer);
 
     QVulkanWindow *m_window;
     QVulkanDeviceFunctions *m_devFuncs;
