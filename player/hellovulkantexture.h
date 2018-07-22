@@ -73,6 +73,9 @@ private:
     bool writeLinearImage(const QImage &img, VkImage image, VkDeviceMemory memory);
     void ensureTexture();
 
+
+    VkCommandBuffer beginSingleTimeCommands();
+
     QVulkanWindow *m_window;
     QVulkanDeviceFunctions *m_devFuncs;
 

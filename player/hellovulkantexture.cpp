@@ -118,6 +118,26 @@ VkShaderModule VulkanRenderer::createShader(const QString &name)
     return shaderModule;
 }
 
+
+VkCommandBuffer VulkanRenderer::beginSingleTimeCommands() {
+  VkCommandBufferAllocateInfo allocInfo = {};
+  allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+  allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+  allocInfo.commandPool = m_window->graphicsCommandPool();
+  allocInfo.commandBufferCount = 1;
+        
+  VkCommandBuffer commandBuffer;
+  m_devFuncs->vkAllocateCommandBuffers(m_window->device(), &allocInfo, &commandBuffer);
+        
+  VkCommandBufferBeginInfo beginInfo = {};
+  beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+  beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+        
+  m_devFuncs->vkBeginCommandBuffer(commandBuffer, &beginInfo);
+        
+  return commandBuffer;
+}
+
 bool VulkanRenderer::createTexture(const QString &name)
 {
     QImage img(name);
