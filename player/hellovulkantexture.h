@@ -63,6 +63,8 @@ public:
 
     void startNextFrame() override;
 
+    void ping();
+
 private:
     VkShaderModule createShader(const QString &name);
     bool createTexture(const QString &name);
@@ -105,4 +107,7 @@ class VulkanWindow : public QVulkanWindow
 {
 public:
     QVulkanWindowRenderer *createRenderer() override;
+    void pingVulkanWindow();
+
+    VulkanRenderer *m_renderer;
 };

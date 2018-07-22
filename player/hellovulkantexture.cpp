@@ -76,12 +76,21 @@ static inline VkDeviceSize aligned(VkDeviceSize v, VkDeviceSize byteAlign)
 
 QVulkanWindowRenderer *VulkanWindow::createRenderer()
 {
-    return new VulkanRenderer(this);
+    m_renderer = new VulkanRenderer(this);
+    return m_renderer;
+}
+
+void VulkanWindow::pingVulkanWindow() {
+    m_renderer->ping(); 
 }
 
 VulkanRenderer::VulkanRenderer(QVulkanWindow *w)
     : m_window(w)
 {
+}
+
+void VulkanRenderer::ping() {
+    printf("Vulkan Renderer pinged!\n");
 }
 
 VkShaderModule VulkanRenderer::createShader(const QString &name)

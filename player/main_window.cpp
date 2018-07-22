@@ -65,6 +65,8 @@ void MainWindow::setValue(int value)
 {
   printf("value: %d\n", value);
 
+  m_window->pingVulkanWindow();
+
   int frameSize = 3686400; // 1280 * 720 * 4
   std::unique_ptr<uint8_t[]> pHostFrame(new uint8_t[frameSize]);
   m_fpIn.seekg(value * frameSize);
