@@ -58,26 +58,17 @@ void MainWindow::openFile() {
   QByteArray movieNameBytes = movieFile.toLatin1();
   const char *movieNameChar = movieNameBytes.data(); 
      
-  std::ifstream fpIn(movieNameChar, std::ifstream::in | std::ifstream::binary);
-
-  int frameSize = 3686400; // 1280 * 720 * 4
-  std::unique_ptr<uint8_t[]> pHostFrame(new uint8_t[frameSize]);
-  std::streamsize nRead = fpIn.read(reinterpret_cast<char*>(pHostFrame.get()), frameSize).gcount();
-  cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, pHostFrame.get()).clone();
-  cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
-  cv::imwrite("/home/lex/cv.jpg", imageWithData);
+  m_fpIn = std::ifstream(movieNameChar, std::ifstream::in | std::ifstream::binary);
 }
 
 void MainWindow::setValue(int value)
 {
   printf("value: %d\n", value);
 
-  std::ifstream fpIn("/home/lex/bazel_nvcc/out.h264", std::ifstream::in | std::ifstream::binary);
-
   int frameSize = 3686400; // 1280 * 720 * 4
   std::unique_ptr<uint8_t[]> pHostFrame(new uint8_t[frameSize]);
-  fpIn.seekg(value * frameSize);
-  std::streamsize nRead = fpIn.read(reinterpret_cast<char*>(pHostFrame.get()), frameSize).gcount();
+  m_fpIn.seekg(value * frameSize);
+  std::streamsize nRead = m_fpIn.read(reinterpret_cast<char*>(pHostFrame.get()), frameSize).gcount();
   cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, pHostFrame.get()).clone();
   cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
   cv::imwrite("/home/lex/cv.jpg", imageWithData);

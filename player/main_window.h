@@ -34,7 +34,7 @@ public slots:
 	QLabel *myLabel;
 
 	QString movieFile;
-	std::ifstream fpIn;	
+  	std::ifstream m_fpIn;
 
 	VulkanWindow *m_window;
 	QSlider *slider;
