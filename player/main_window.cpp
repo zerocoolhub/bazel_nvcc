@@ -23,6 +23,8 @@ MainWindow::MainWindow(VulkanWindow *w)
   slider->setTickInterval(10);
   slider->setSingleStep(1);
 
+  connect(slider, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
+
   myLabel = new QLabel;
   QGridLayout *gridLayout = new QGridLayout(widget);
   gridLayout->addWidget(myLabel, 0, 0, 0);
@@ -64,4 +66,9 @@ void MainWindow::openFile() {
   cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, pHostFrame.get()).clone();
   cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
   cv::imwrite("/home/lex/cv.jpg", imageWithData);
+}
+
+void MainWindow::setValue(int value)
+{
+  printf("value: %d\n", value);
 }

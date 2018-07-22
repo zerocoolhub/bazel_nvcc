@@ -1,9 +1,17 @@
 load("//:cuda.bzl", "cc_cuda_binary")
 package(default_visibility = ["//visibility:public"])
 
+genrule(
+    name = "moc_main_window",
+    srcs = ["main_window.h"],
+    outs = ["moc_main_window.cpp"],
+    #cmd = "moc slidersgroup.h",
+    cmd = "moc $(location main_window.h) -o $@",
+)
+
 cc_cuda_binary(
   name = "qt",
-  srcs = glob(["*.cpp", "*.h"]),
+  srcs = glob(["*.cpp", "*.h"]) + [":moc_main_window"],
   deps = [
     "@qt//:qt",
     #"@vulkan//:vulkan", # VULKAN MUST BE LOADED AS A SYSTEM LIBRARY, VIA LD_LIBRARY_PATH,
