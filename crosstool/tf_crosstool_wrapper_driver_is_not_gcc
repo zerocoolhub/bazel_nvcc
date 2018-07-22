@@ -209,7 +209,10 @@ def InvokeNvcc(argv, log=False):
   if depfiles:
     # Generate the dependency file
     depfile = depfiles[0]
-    cmd = (NVCC_PATH + ' ' + nvccopts +
+    # AT SOME POINT, WE NEED TO TAKE THIS HARDCODED -shared ... -fPIC flag
+    # OUT, AND ONLY INSERT IT WHEN THE BAZEL RULE CALLS FOR IT.
+    # Right now it has to be here to let NVCC work with Position Independent Code.
+    cmd = (NVCC_PATH + ' ' + nvccopts + '  -shared -Xcompiler -fPIC ' +
            ' --compiler-options "' + host_compiler_options + '"' +
            ' --compiler-bindir=' + GCC_HOST_COMPILER_PATH +
            ' -I .' +
