@@ -357,16 +357,6 @@ void VulkanRenderer::initResources()
 {
     qDebug("initResources");
 
-    for (int i = 0; i < 2; i++) {
-        std::string text = "/home/lex/bazel_nvcc/player/texture_";
-        text += std::to_string(i);
-        text += std::string(".png");
-
-        QImage img(text.c_str());
-        img = img.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-        m_imageData.push_back(img);
-    }
-
     VkDevice dev = m_window->device();
     m_devFuncs = m_window->vulkanInstance()->deviceFunctions(dev);
 
