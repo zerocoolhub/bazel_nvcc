@@ -76,6 +76,7 @@ private:
 
     VkCommandBuffer beginSingleTimeCommands();
     void endSingleTimeCommands(VkCommandBuffer commandBuffer);
+    void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
 
     QVulkanWindow *m_window;
     QVulkanDeviceFunctions *m_devFuncs;
