@@ -7,6 +7,8 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 
+#include <opencv2/opencv.hpp>
+
 MainWindow::MainWindow(VulkanWindow *w)
     : m_window(w)
 {
@@ -50,15 +52,16 @@ void MainWindow::createMenus() {
 void MainWindow::openFile() {
   movieFile = QFileDialog::getOpenFileName(this,
     tr("Open Movie File"), QDir::homePath(), tr("All files (*.*)"));
-      
-  std::ifstream fpIn((char *)movieFile.data(), std::ifstream::in | std::ifstream::binary);
+  // Need to go from QString to char* array for fpIn
+  QByteArray movieNameBytes = movieFile.toLatin1();
+  const char *movieNameChar = movieNameBytes.data(); 
+     
+  std::ifstream fpIn(movieNameChar, std::ifstream::in | std::ifstream::binary);
 
   int frameSize = 3686400; // 1280 * 720 * 4
   std::unique_ptr<uint8_t[]> pHostFrame(new uint8_t[frameSize]);
   std::streamsize nRead = fpIn.read(reinterpret_cast<char*>(pHostFrame.get()), frameSize).gcount();
-  QImage image("/home/lex/test.jpg");
-
-  myLabel->setPixmap(QPixmap::fromImage(image));
-
-  qDebug() << movieFile; 
+  cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, pHostFrame.get()).clone();
+  cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
+  cv::imwrite("/home/lex/cv.jpg", imageWithData);
 }
