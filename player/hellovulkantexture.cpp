@@ -80,7 +80,7 @@ QVulkanWindowRenderer *VulkanWindow::createRenderer()
     return m_renderer;
 }
 
-void VulkanWindow::updateFrame(std::unique_ptr<uint8_t[]> &arg) {
+void VulkanWindow::updateFrame(uint8_t *arg) {
     m_renderer->updateFrame(arg); 
 }
 
@@ -89,14 +89,14 @@ VulkanRenderer::VulkanRenderer(QVulkanWindow *w)
 {
 }
 
-void VulkanRenderer::updateFrame(std::unique_ptr<uint8_t[]> &arg) {
+void VulkanRenderer::updateFrame(uint8_t *arg) {
     printf("Update m_qimg \n");
-    m_qimg = QImage(arg.get(), 1280, 720, 5120, QImage::Format_RGBA8888_Premultiplied);
+    m_qimg = QImage(arg, 1280, 720, 5120, QImage::Format_RGBA8888);
     m_shouldUpdate = true;
-    //m_qimg = m_qimg.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+    //m_qimg = m_qimg.convertToFormat(QImage::Format_RGBA8888);
 
-    //QImage img(QStringLiteral("/home/lex/bazel_nvcc/player/texture1.png"));
-    //img = img.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+    //QImage img(QStringLiteral("/home/lex/cv.jpg"));
+    //img = img.convertToFormat(QImage::Format_RGBA8888);
     //m_qimg = img;
 }
 

@@ -65,7 +65,7 @@ public:
 
     void startNextFrame() override;
 
-    void updateFrame(std::unique_ptr<uint8_t[]> &arg);
+    void updateFrame(uint8_t *arg);
 
 private:
     VkShaderModule createShader(const QString &name);
@@ -117,7 +117,7 @@ class VulkanWindow : public QVulkanWindow
 {
 public:
     QVulkanWindowRenderer *createRenderer() override;
-    void updateFrame(std::unique_ptr<uint8_t[]> &arg);
+    void updateFrame(uint8_t *arg);
 
     VulkanRenderer *m_renderer;
 };

@@ -70,11 +70,14 @@ void MainWindow::setValue(int value)
   int frameSize = 3686400; // 1280 * 720 * 4
   std::unique_ptr<uint8_t[]> pHostFrame(new uint8_t[frameSize]);
   m_fpIn.seekg(value * frameSize);
-  std::streamsize nRead = m_fpIn.read(reinterpret_cast<char*>(pHostFrame.get()), frameSize).gcount();
 
-  m_window->updateFrame(pHostFrame);
+  uint8_t *buffer= new uint8_t[frameSize];
+  std::streamsize nRead = m_fpIn.read(reinterpret_cast<char*>(buffer), frameSize).gcount();
 
-  cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, pHostFrame.get()).clone();
+
+  cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, buffer).clone();
   cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
   cv::imwrite("/home/lex/cv.jpg", imageWithData);
+
+  m_window->updateFrame(buffer);
 }
