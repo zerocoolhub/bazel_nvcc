@@ -171,7 +171,7 @@ void VulkanRenderer::transitionImageLayout(VkImage image, VkFormat format, VkIma
   VkPipelineStageFlags sourceStage;
   VkPipelineStageFlags destinationStage;
         
-  if (oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
+  if (oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_GENERAL) {
     barrier.srcAccessMask = 0;
     barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
             
@@ -240,10 +240,10 @@ bool VulkanRenderer::createTexture(const QString &name)
                                 m_window->hostVisibleMemoryIndex()))
             return false;
 
-        if (!writeLinearImage(img, m_texImage, m_texMem))
+        /*if (!writeLinearImage(img, m_texImage, m_texMem))
             return false;
 
-        m_texLayoutPending = true;
+        m_texLayoutPending = true;*/
     } else {
         if (!createTextureImage(img.size(), &m_texStaging, &m_texStagingMem,
                                 VK_IMAGE_TILING_LINEAR, VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
@@ -303,7 +303,7 @@ bool VulkanRenderer::createTextureImage(const QSize &size, VkImage *image, VkDev
     imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
     imageInfo.tiling = tiling;
     imageInfo.usage = usage;
-    imageInfo.initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
+    imageInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
 
     VkResult err = m_devFuncs->vkCreateImage(dev, &imageInfo, nullptr, image);
     if (err != VK_SUCCESS) {
@@ -383,8 +383,8 @@ void VulkanRenderer::ensureTexture()
     if (m_texLayoutPending) {
         m_texLayoutPending = false;
 
-        barrier.oldLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
-        barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        barrier.oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        barrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
         barrier.srcAccessMask = 0; // VK_ACCESS_HOST_WRITE_BIT ### no, keep validation layer happy (??)
         barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
         barrier.image = m_texImage;
@@ -620,7 +620,7 @@ void VulkanRenderer::initResources()
         VkDescriptorImageInfo descImageInfo = {
             m_sampler,
             m_texView,
-            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
+            VK_IMAGE_LAYOUT_GENERAL
         };
 
         descWrite[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -860,7 +860,12 @@ void VulkanRenderer::startNextFrame()
     const QSize sz = m_window->swapChainImageSize();
 
     // Add the necessary barriers and do the host-linear -> device-optimal copy, if not yet done.
-    ensureTexture();
+    //ensureTexture();
+
+    transitionImageLayout(m_texImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL);
+    QImage img(QStringLiteral("/home/lex/bazel_nvcc/player/texture1.png"));
+    img = img.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+    writeLinearImage(img, m_texImage, m_texMem);
 
     VkClearColorValue clearColor = {{ 0, 0, 0, 1 }};
     VkClearDepthStencilValue clearDS = { 1, 0 };

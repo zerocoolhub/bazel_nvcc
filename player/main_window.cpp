@@ -27,7 +27,7 @@ MainWindow::MainWindow(VulkanWindow *w)
 
   myLabel = new QLabel;
   QGridLayout *gridLayout = new QGridLayout(widget);
-  gridLayout->addWidget(myLabel, 0, 0, 0);
+  gridLayout->addWidget(wrapper, 0, 0, 0);
   gridLayout->setColumnStretch(0, 0);
   gridLayout->setColumnStretch(1, 0);
   gridLayout->addWidget(slider, 1, 0, 0);
