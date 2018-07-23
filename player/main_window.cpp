@@ -59,18 +59,21 @@ void MainWindow::openFile() {
   const char *movieNameChar = movieNameBytes.data(); 
      
   m_fpIn = std::ifstream(movieNameChar, std::ifstream::in | std::ifstream::binary);
+  setValue(1);
 }
 
 void MainWindow::setValue(int value)
 {
   printf("value: %d\n", value);
 
-  m_window->pingVulkanWindow();
 
   int frameSize = 3686400; // 1280 * 720 * 4
   std::unique_ptr<uint8_t[]> pHostFrame(new uint8_t[frameSize]);
   m_fpIn.seekg(value * frameSize);
   std::streamsize nRead = m_fpIn.read(reinterpret_cast<char*>(pHostFrame.get()), frameSize).gcount();
+
+  m_window->updateFrame(pHostFrame);
+
   cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, pHostFrame.get()).clone();
   cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
   cv::imwrite("/home/lex/cv.jpg", imageWithData);

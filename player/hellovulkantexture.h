@@ -51,6 +51,8 @@
 #include <QtGui/QVulkanWindow>
 #include <QtGui/QImage>
 
+#include <memory>
+
 class VulkanRenderer : public QVulkanWindowRenderer
 {
 public:
@@ -63,7 +65,7 @@ public:
 
     void startNextFrame() override;
 
-    void ping();
+    void updateFrame(std::unique_ptr<uint8_t[]> &arg);
 
 private:
     VkShaderModule createShader(const QString &name);
@@ -104,6 +106,9 @@ private:
     QSize m_texSize;
     VkFormat m_texFormat;
 
+    QImage m_qimg;
+    bool m_shouldUpdate;
+
     QMatrix4x4 m_proj;
     float m_rotation = 0.0f;
 };
@@ -112,7 +117,7 @@ class VulkanWindow : public QVulkanWindow
 {
 public:
     QVulkanWindowRenderer *createRenderer() override;
-    void pingVulkanWindow();
+    void updateFrame(std::unique_ptr<uint8_t[]> &arg);
 
     VulkanRenderer *m_renderer;
 };
