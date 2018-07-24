@@ -3,6 +3,7 @@
 #include "hellovulkantexture.h"
 
 #include <cuda_utils/NvCodecUtils.h>
+#include <cuda_kernels/overlay_kernel.h>
 
 #include <QtWidgets/QtWidgets>
 #include <QtWidgets/QVBoxLayout>
@@ -68,7 +69,6 @@ void MainWindow::openFile() {
 
 void MainWindow::setValue(int value)
 {
-  PrintStuff();
   printf("value: %d\n", value);
   int frameSize = 3686400; // 1280 * 720 * 4
 
@@ -80,12 +80,23 @@ void MainWindow::setValue(int value)
   uint8_t *buffer= new uint8_t[frameSize];
   std::streamsize nRead = m_fpIn.read(reinterpret_cast<char*>(buffer), frameSize).gcount();
 
+  cv::Mat cv_overlay_image_rgba = cv::imread("/home/lex/bazel_nvcc/overlay1.png", CV_LOAD_IMAGE_COLOR);
+  //cv::imwrite("/home/lex/overlay.jpg", cv_overlay_image_rgba);
+  //cv::cvtColor(cv_overlay_image_rgba, cv_overlay_image_rgba, CV_BGR2RGBA);
+  unsigned char *overlayImageRawSrc = cv_overlay_image_rgba.ptr<unsigned char>(0);
+  //unsigned char overlayImageRawDst =  new unsigned char[211588];
+  //memcpy(&overlayImageRawDst, &overlayImageRawSrc, sizeof overlayImageRawDst);
+  uchar4 *overlayImageRaw = (uchar4 *)overlayImageRawSrc;
+  struct OverlayImage overlay = {overlayImageRaw, 169, 313, 0, 0};
+  cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, buffer).clone();
+  //cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
+  uchar4 *base_image_raw = (uchar4 *)imageWithData.ptr<unsigned char>(0);
+  _overlay_image(reinterpret_cast<uchar4*>(buffer), 720, 1280, overlay);
   /*
   Save frames as images, for debugging purposes
-  cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, buffer).clone();
+  cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, buffer).clone();*/
   cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
   cv::imwrite("/home/lex/cv.jpg", imageWithData);
-  */
 
-  m_windowOriginal->updateFrame(buffer);
+  m_windowOriginal->updateFrame(reinterpret_cast<uint8_t*>(buffer));
 }
