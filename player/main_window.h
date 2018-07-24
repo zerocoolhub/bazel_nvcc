@@ -15,7 +15,7 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
  public:
-	explicit MainWindow(VulkanWindow *w);
+	explicit MainWindow(VulkanWindow *w, VulkanWindow *w2);
 
 signals:
     void valueChanged(int value);
@@ -36,6 +36,7 @@ public slots:
 	QString movieFile;
   	std::ifstream m_fpIn;
 
-	VulkanWindow *m_window;
+	VulkanWindow *m_windowOriginal;
+	VulkanWindow *m_windowEdit;
 	QSlider *slider;
 };

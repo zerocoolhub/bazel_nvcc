@@ -25,8 +25,10 @@ int main(int argc, char *argv[])
 
   VulkanWindow *w = new VulkanWindow;
   w->setVulkanInstance(&inst);
+  VulkanWindow *w2 = new VulkanWindow;
+  w2->setVulkanInstance(&inst);
 
-  MainWindow mainWindow(w);
+  MainWindow mainWindow(w, w2);
 
   mainWindow.resize(1280, 720);
   mainWindow.show();

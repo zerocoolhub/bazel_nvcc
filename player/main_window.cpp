@@ -9,13 +9,14 @@
 
 #include <opencv2/opencv.hpp>
 
-MainWindow::MainWindow(VulkanWindow *w)
-    : m_window(w)
+MainWindow::MainWindow(VulkanWindow *w, VulkanWindow *w2)
+    : m_windowOriginal(w), m_windowEdit(w2)
 {
   QWidget *widget = new QWidget;
   setCentralWidget(widget);
 
   QWidget *wrapper = QWidget::createWindowContainer(w);
+  QWidget *wrapper2 = QWidget::createWindowContainer(w2);
 
   slider = new QSlider(Qt::Horizontal);
   slider->setFocusPolicy(Qt::StrongFocus);
@@ -28,8 +29,9 @@ MainWindow::MainWindow(VulkanWindow *w)
   myLabel = new QLabel;
   QGridLayout *gridLayout = new QGridLayout(widget);
   gridLayout->addWidget(wrapper, 0, 0, 0);
-  gridLayout->setColumnStretch(0, 0);
-  gridLayout->setColumnStretch(1, 0);
+  gridLayout->addWidget(wrapper2, 0, 1, 0);
+  gridLayout->setColumnStretch(0, 1);
+  gridLayout->setColumnStretch(1, 1);
   gridLayout->addWidget(slider, 1, 0, 0);
   widget->setLayout(gridLayout);
 
@@ -82,5 +84,5 @@ void MainWindow::setValue(int value)
   cv::imwrite("/home/lex/cv.jpg", imageWithData);
   */
 
-  m_window->updateFrame(buffer);
+  m_windowOriginal->updateFrame(buffer);
 }
