@@ -106,8 +106,8 @@ private:
     QSize m_texSize;
     VkFormat m_texFormat;
 
-    QImage m_qimg;
-    bool m_shouldUpdate;
+    uint8_t *m_frameData;
+    bool m_shouldUpdate = false;
 
     QMatrix4x4 m_proj;
     float m_rotation = 0.0f;

@@ -90,9 +90,8 @@ VulkanRenderer::VulkanRenderer(QVulkanWindow *w)
 }
 
 void VulkanRenderer::updateFrame(uint8_t *arg) {
-    printf("Update m_qimg \n");
-    m_qimg = QImage(arg, 1280, 720, 5120, QImage::Format_RGBA8888);
-    m_shouldUpdate = true;
+  m_frameData = arg;
+  m_shouldUpdate = true;
     //m_qimg = m_qimg.convertToFormat(QImage::Format_RGBA8888);
 
     //QImage img(QStringLiteral("/home/lex/cv.jpg"));
@@ -871,10 +870,11 @@ void VulkanRenderer::startNextFrame()
 
     if (m_shouldUpdate) {
       m_shouldUpdate = false;
-    transitionImageLayout(m_texImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL);
+      QImage nextFrame(m_frameData, 1280, 720, 5120, QImage::Format_RGBA8888);
+      transitionImageLayout(m_texImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL);
+      writeLinearImage(nextFrame, m_texImage, m_texMem);
+      delete m_frameData;
     //QImage img(QStringLiteral("/home/lex/bazel_nvcc/player/texture1.png"));
-    //img = img.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-    writeLinearImage(m_qimg, m_texImage, m_texMem);
   }
 
     VkClearColorValue clearColor = {{ 0, 0, 0, 1 }};
