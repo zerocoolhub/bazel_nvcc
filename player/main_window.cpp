@@ -2,6 +2,8 @@
 
 #include "hellovulkantexture.h"
 
+#include <cuda_utils/NvCodecUtils.h>
+
 #include <QtWidgets/QtWidgets>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QGridLayout>
@@ -66,6 +68,7 @@ void MainWindow::openFile() {
 
 void MainWindow::setValue(int value)
 {
+  PrintStuff();
   printf("value: %d\n", value);
   int frameSize = 3686400; // 1280 * 720 * 4
 

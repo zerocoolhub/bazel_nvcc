@@ -291,6 +291,8 @@ inline void CheckInputFile(const char *szInFilePath) {
     }
 }
 
+void PrintStuff();
+
 void OverlayImage(uint8_t *d_base_img_rgba, int d_base_img_width, int d_base_img_height, uchar4 *d_overlay_img_rgba, int d_overlay_width, int d_overlay_height);
 
 void Nv12ToBgra32(uint8_t *dpNv12, int nNv12Pitch, uint8_t *dpBgra, int nBgraPitch, int nWidth, int nHeight, int iMatrix = 0);

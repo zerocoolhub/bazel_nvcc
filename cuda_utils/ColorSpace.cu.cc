@@ -11,6 +11,7 @@
 
 #include <stdint.h>
 #include <cuda_runtime.h>
+#include <stdio.h>
 
 typedef enum ColorSpaceStandard {
     ColorSpaceStandard_BT709 = 0, 
@@ -278,6 +279,10 @@ __global__ static void RgbToYuvKernel(uint8_t *pRgb, int nRgbPitch, uint8_t *pYu
         RgbToU<decltype(YuvUnitx2::x)>(r, g, b), 
         RgbToV<decltype(YuvUnitx2::x)>(r, g, b),
     };
+}
+
+void PrintStuff() {
+    printf("Print Stuff!\n");
 }
 
 __global__ static void OverlayImageKernel(BGRA32 *d_base_img_rgba, int d_base_img_width, int d_base_img_height, uchar4 *d_overlay_img_rgba, int d_overlay_width, int d_overlay_height)
