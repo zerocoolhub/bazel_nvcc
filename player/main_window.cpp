@@ -65,19 +65,22 @@ void MainWindow::openFile() {
 void MainWindow::setValue(int value)
 {
   printf("value: %d\n", value);
-
-
   int frameSize = 3686400; // 1280 * 720 * 4
-  std::unique_ptr<uint8_t[]> pHostFrame(new uint8_t[frameSize]);
+
+  // Not using smart pointers right now, creates weird artifacts in texture,
+  // perhaps due to premature release.
+  // std::unique_ptr<uint8_t[]> pHostFrame(new uint8_t[frameSize]);
   m_fpIn.seekg(value * frameSize);
 
   uint8_t *buffer= new uint8_t[frameSize];
   std::streamsize nRead = m_fpIn.read(reinterpret_cast<char*>(buffer), frameSize).gcount();
 
-
+  /*
+  Save frames as images, for debugging purposes
   cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, buffer).clone();
   cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
   cv::imwrite("/home/lex/cv.jpg", imageWithData);
+  */
 
   m_window->updateFrame(buffer);
 }
