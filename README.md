@@ -4,6 +4,15 @@
 ```
 bazel run //cuda_trans:cuda_trans --spawn_strategy=standalone --crosstool_top=//crosstool:toolchain
 ```
+**NOTE:** In order for Vulkan to run properly, you need to have the environment variable LD_LIBRARY_PATH pointing to your Vulkan `libs` directory (which contains the .so files). This needs to be set before you can actually run the player. Otherwise, you will get:
+
+"Failed to load vulkan: Cannot load library vulkan: (vulkan: cannot open shared object file: No such file or directory)
+initInstance: No Vulkan library available"
+
+For example, on Varun's computer, you need to run this one-time command first:
+```
+export LD_LIBRARY_PATH=/home/lex/VulkanSDK/1.1.73.0/x86_64/lib/
+```
 
 ## Explanation
 
