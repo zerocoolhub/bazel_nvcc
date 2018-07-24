@@ -19,10 +19,10 @@ void overlay_image_kernel(uchar4* const d_base_image_rgba,
     uchar4 input_byte = d_overlay_image_rgba[d_overlay_i];
 
     uchar4 output_byte = (uchar4) d_base_image_rgba[d_base_i];
-    output_byte.x = 193;//(unsigned char) input_byte.x;
-    output_byte.y = 66;//(unsigned char) input_byte.y;
-    output_byte.z = 66;//(unsigned char) input_byte.z;
-    output_byte.w = 255;//(unsigned char) input_byte.w;
+    output_byte.x = (unsigned char) input_byte.x;
+    output_byte.y = (unsigned char) input_byte.y;
+    output_byte.z = (unsigned char) input_byte.z;
+    output_byte.w = (unsigned char) input_byte.w;
     d_base_image_rgba[d_base_i] = output_byte;
 	}
 }
@@ -59,7 +59,6 @@ void _overlay_image(uchar4* const h_base_image_rgba,
                                                 h_base_rows, h_base_columns,
                                                 d_overlay_image_rgba,
                                                 overlay_rows, overlay_cols);
-
   // Copy grey image from GPU memory to CPU memory
   cudaMemcpy(h_base_image_rgba, d_base_image_rgba, base_num_pixels * sizeof(uchar4),
              cudaMemcpyDeviceToHost);

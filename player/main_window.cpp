@@ -82,12 +82,20 @@ void MainWindow::setValue(int value)
 
   cv::Mat cv_overlay_image_rgba = cv::imread("/home/lex/bazel_nvcc/overlay1.png", CV_LOAD_IMAGE_COLOR);
   //cv::imwrite("/home/lex/overlay.jpg", cv_overlay_image_rgba);
-  //cv::cvtColor(cv_overlay_image_rgba, cv_overlay_image_rgba, CV_BGR2RGBA);
+  cv::cvtColor(cv_overlay_image_rgba, cv_overlay_image_rgba, CV_BGR2RGBA);
   unsigned char *overlayImageRawSrc = cv_overlay_image_rgba.ptr<unsigned char>(0);
-  //unsigned char overlayImageRawDst =  new unsigned char[211588];
-  //memcpy(&overlayImageRawDst, &overlayImageRawSrc, sizeof overlayImageRawDst);
-  uchar4 *overlayImageRaw = (uchar4 *)overlayImageRawSrc;
-  struct OverlayImage overlay = {overlayImageRaw, 169, 313, 0, 0};
+  uchar4 *overlayImageRawSrc2 = (uchar4 *)overlayImageRawSrc;
+  unsigned char *overlayImageRawDst =  new unsigned char[200960];
+  memcpy(&overlayImageRawDst, &overlayImageRawSrc, sizeof overlayImageRawDst);
+  int size = 160*314;
+  uchar4 *overlayImageRaw = new uchar4[160*314];
+  for (int i = 0; i < size; i++) {
+    overlayImageRaw[i].x = overlayImageRawSrc2[i].x;
+    overlayImageRaw[i].y = overlayImageRawSrc2[i].y;
+    overlayImageRaw[i].z = overlayImageRawSrc2[i].z;
+    overlayImageRaw[i].w = 255;
+  }
+  struct OverlayImage overlay = {overlayImageRaw, 160, 314, 0, 0};
   cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, buffer).clone();
   //cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
   uchar4 *base_image_raw = (uchar4 *)imageWithData.ptr<unsigned char>(0);
