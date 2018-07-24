@@ -77,16 +77,18 @@ void MainWindow::setValue(int value)
   // std::unique_ptr<uint8_t[]> pHostFrame(new uint8_t[frameSize]);
   m_fpIn.seekg(value * frameSize);
 
-  uint8_t *buffer= new uint8_t[frameSize];
+  uint8_t *buffer = new uint8_t[frameSize];
   std::streamsize nRead = m_fpIn.read(reinterpret_cast<char*>(buffer), frameSize).gcount();
+  uint8_t *buffer2 = new uint8_t[frameSize];
+  memcpy(buffer2, buffer, frameSize);
 
   cv::Mat cv_overlay_image_rgba = cv::imread("/home/lex/bazel_nvcc/overlay1.png", CV_LOAD_IMAGE_COLOR);
   //cv::imwrite("/home/lex/overlay.jpg", cv_overlay_image_rgba);
   cv::cvtColor(cv_overlay_image_rgba, cv_overlay_image_rgba, CV_BGR2RGBA);
   unsigned char *overlayImageRawSrc = cv_overlay_image_rgba.ptr<unsigned char>(0);
   uchar4 *overlayImageRawSrc2 = (uchar4 *)overlayImageRawSrc;
-  unsigned char *overlayImageRawDst =  new unsigned char[200960];
-  memcpy(&overlayImageRawDst, &overlayImageRawSrc, sizeof overlayImageRawDst);
+  //unsigned char *overlayImageRawDst =  new unsigned char[200960];
+  //memcpy(&overlayImageRawDst, &overlayImageRawSrc, sizeof overlayImageRawDst);
   int size = 160*314;
   uchar4 *overlayImageRaw = new uchar4[160*314];
   for (int i = 0; i < size; i++) {
@@ -99,7 +101,9 @@ void MainWindow::setValue(int value)
   cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, buffer).clone();
   //cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
   uchar4 *base_image_raw = (uchar4 *)imageWithData.ptr<unsigned char>(0);
-  _overlay_image(reinterpret_cast<uchar4*>(buffer), 720, 1280, overlay);
+  _overlay_image(reinterpret_cast<uchar4*>(buffer2), 720, 1280, overlay);
+
+  delete overlayImageRaw;
   /*
   Save frames as images, for debugging purposes
   cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, buffer).clone();*/
@@ -107,4 +111,5 @@ void MainWindow::setValue(int value)
   cv::imwrite("/home/lex/cv.jpg", imageWithData);
 
   m_windowOriginal->updateFrame(reinterpret_cast<uint8_t*>(buffer));
+  m_windowEdit->updateFrame(reinterpret_cast<uint8_t*>(buffer2));
 }
