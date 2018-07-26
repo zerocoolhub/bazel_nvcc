@@ -69,7 +69,6 @@ void MainWindow::openFile() {
 
 void MainWindow::setValue(int value)
 {
-  printf("value: %d\n", value);
   int frameSize = 3686400; // 1280 * 720 * 4
 
   // Not using smart pointers right now, creates weird artifacts in texture,
@@ -77,11 +76,11 @@ void MainWindow::setValue(int value)
   // std::unique_ptr<uint8_t[]> pHostFrame(new uint8_t[frameSize]);
   m_fpIn.seekg(value * frameSize);
 
-  uint8_t *buffer = new uint8_t[frameSize];
-  std::streamsize nRead = m_fpIn.read(reinterpret_cast<char*>(buffer), frameSize).gcount();
-  uint8_t *buffer2 = new uint8_t[frameSize];
+  uint8_t *videoFrame = new uint8_t[frameSize];
+  std::streamsize nRead = m_fpIn.read(reinterpret_cast<char*>(videoFrame), frameSize).gcount();
+  uint8_t *videoFrameOverlay = new uint8_t[frameSize];
   // Copy the original frame over
-  memcpy(buffer2, buffer, frameSize);
+  memcpy(videoFrameOverlay, videoFrame, frameSize);
 
   cv::Mat cv_overlay_image_rgba = cv::imread("/home/lex/bazel_nvcc/overlay1.png", CV_LOAD_IMAGE_COLOR);
   cv::cvtColor(cv_overlay_image_rgba, cv_overlay_image_rgba, CV_BGR2RGBA);
@@ -96,8 +95,7 @@ void MainWindow::setValue(int value)
     overlayImageRaw[i].w = 255;
   }
   struct OverlayImage overlay = {overlayImageRaw, 160, 314, 0, 0};
-  cv::Mat imageWithData = cv::Mat(720, 1280, CV_8UC4, buffer).clone();
-  _overlay_image(reinterpret_cast<uchar4*>(buffer2), 720, 1280, overlay);
+  _overlay_image(reinterpret_cast<uchar4*>(videoFrameOverlay), 720, 1280, overlay);
 
   delete overlayImageRaw;
   /*
@@ -106,6 +104,6 @@ void MainWindow::setValue(int value)
   //cvtColor(imageWithData, imageWithData, CV_BGR2RGBA);
   //cv::imwrite("/home/lex/cv.jpg", imageWithData);
 
-  m_windowOriginal->updateFrame(reinterpret_cast<uint8_t*>(buffer));
-  m_windowEdit->updateFrame(reinterpret_cast<uint8_t*>(buffer2));
+  m_windowOriginal->updateFrame(reinterpret_cast<uint8_t*>(videoFrame));
+  m_windowEdit->updateFrame(reinterpret_cast<uint8_t*>(videoFrameOverlay));
 }
